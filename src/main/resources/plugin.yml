@@ -1,0 +1,15 @@
+name: Unchanted
+version: '1.0.0'
+main: me.RsxST.unchanted.Unchanted
+api-version: '1.21'
+authors: [ RealSmileyXD ]
+commands:
+  unenchant:
+    description: Remove enchantments from the item in your hand or from a specific slot.
+    usage: /<command> [all|remove <enchantment>]
+    permission: unenchant.use
+    permission-message: "&cYou do not have permission to use this command."
+permissions:
+  unenchant.use:
+    description: Allows the player to use the /unenchant command.
+    default: true

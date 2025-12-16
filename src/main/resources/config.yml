@@ -1,0 +1,19 @@
+# Unchanted Plugin Configuration using MiniMessage
+
+# Message shown when player is not holding an item
+hold_item: "<red>You must be holding an item to remove enchantments!</red>"
+
+# Message shown when the item has no enchantments
+no_enchants: "<red>This item has no enchantments to remove!</red>"
+
+# Message shown when all enchantments are removed successfully
+unenchant_success: "<green>All enchantments have been removed from your item!</green>"
+
+# Message shown when inventory is full and book cannot be added
+inventory_full: "<red>Your inventory is full! Could not give the enchanted book.</red>"
+
+# Default permission required to use the command
+permission: "unenchant.use"
+
+# Optional: toggle whether players can remove all enchantments at once
+allow_remove_all: false
