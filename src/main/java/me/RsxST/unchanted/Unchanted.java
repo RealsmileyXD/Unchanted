@@ -21,15 +21,12 @@ public final class Unchanted extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        getLogger().info("UnEnchant has been enabled!");
         Objects.requireNonNull(this.getCommand("unenchant")).setExecutor(new UnenchantCommand(this)); // Register the command executor
         saveDefaultConfig();
     }
 
     @Override
-    public void onDisable() {
-        getLogger().info("UnEnchant has been disabled!");
-    }
+    public void onDisable() {}
 
     public void removeEnchantments(Player player, boolean all) {
         ItemStack item = player.getInventory().getItemInMainHand();
@@ -51,8 +48,8 @@ public final class Unchanted extends JavaPlugin {
             enchantments.keySet().forEach(item::removeEnchantment);
             player.sendMessage(format(getConfig().getString("unenchant_success")));
         } else {
-            // List enchantments for player to pick
-            player.sendMessage(format("&eClick an enchantment to remove it:"));
+            player.sendMessage(format(getConfig().getString("click_enchant")));
+
             for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
                 Component clickable = Component.text(entry.getKey().getKey().getKey() + " " + entry.getValue(), NamedTextColor.YELLOW)
                         .clickEvent(ClickEvent.runCommand("/unenchant remove " + entry.getKey().getKey().getKey()));
@@ -62,23 +59,35 @@ public final class Unchanted extends JavaPlugin {
     }
 
     public void giveBook(Player player, Enchantment enchant, int level) {
+        boolean allowOverLimit = getConfig().getBoolean("allow-overlimit-books");
+        giveBook(player, enchant, level, allowOverLimit);
+    }
+
+    public void giveBook(Player player, Enchantment enchant, int level, boolean allowOverLimit) {
+        if (enchant == null || level < 1) return;
+
         ItemStack book = new ItemStack(Material.ENCHANTED_BOOK);
         EnchantmentStorageMeta meta = (EnchantmentStorageMeta) book.getItemMeta();
-        if (meta != null) {
-            meta.addStoredEnchant(enchant, level, true);
-            book.setItemMeta(meta);
+        if (meta == null) return;
+
+        if (!allowOverLimit) {
+            level = Math.min(level, enchant.getMaxLevel());
         }
-        if (player.getInventory().firstEmpty() == -1) {
-            player.sendMessage(format(getConfig().getString("inventory_full")));
-        } else {
-            player.getInventory().addItem(book);
+
+        meta.addStoredEnchant(enchant, level, allowOverLimit);
+        book.setItemMeta(meta);
+
+        Map<Integer, ItemStack> leftover = player.getInventory().addItem(book);
+        if (!leftover.isEmpty()) {
+            player.sendMessage(format(
+                    getConfig().getString("inventory_full", "Inventory full!")
+            ));
         }
     }
 
     public Component format(String input) {
         if (input == null || input.isBlank()) return Component.empty();
 
-        // Convert legacy & codes to MiniMessage-compatible string
         String miniMessageInput = LegacyComponentSerializer.legacyAmpersand().serialize(
                 LegacyComponentSerializer.legacyAmpersand().deserialize(input)
         );

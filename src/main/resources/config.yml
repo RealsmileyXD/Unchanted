@@ -1,19 +1,28 @@
-# Unchanted Plugin Configuration using MiniMessage
+# -----------------------------
+# Unchanted Plugin Configuration
+# -----------------------------
 
-# Message shown when player is not holding an item
-hold_item: "<red>You must be holding an item to remove enchantments!</red>"
+# Whether books can exceed the normal maximum enchantment level
+allow-overlimit-books: true
 
-# Message shown when the item has no enchantments
-no_enchants: "<red>This item has no enchantments to remove!</red>"
+# -----------------------------
+# Messages
+# -----------------------------
 
-# Message shown when all enchantments are removed successfully
-unenchant_success: "<green>All enchantments have been removed from your item!</green>"
+# General messages
+player_only: "<red>This command can only be executed by a player."
+no_permission: "<red>You do not have permission to use this command."
+usage: "<red>Usage: /unenchant [all] or click an enchantment to remove it>"
 
-# Message shown when inventory is full and book cannot be added
-inventory_full: "<red>Your inventory is full! Could not give the enchanted book.</red>"
+# Inventory messages
+inventory_full: "<red>Your inventory is full!"
+hold_item: "<red>You must be holding an item!"
+no_enchants: "<gray>This item has no enchantments."
+unenchant_success: "<green>All enchantments removed successfully!"
 
-# Default permission required to use the command
-permission: "unenchant.use"
-
-# Optional: toggle whether players can remove all enchantments at once
-allow_remove_all: false
+# Single enchant removal messages
+click_enchant: "<yellow>Click an enchantment to remove it:"
+enchant_format: "<yellow>{enchant} {level}</yellow>"   # Clickable list format
+unknown_enchant: "<red>Unknown enchantment: <yellow>{enchant}"
+no_item_enchant: "<red>Your item does not have that enchantment!"
+removed_enchant: "<green>Removed <yellow>{enchant} <green>from your item!"
